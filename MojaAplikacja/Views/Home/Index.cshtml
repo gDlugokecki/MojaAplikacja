@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Moja Aplikacja</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Log In</h2>
+        <p>
+            Zaloguj się!
+        </p>
+        <p>@Html.ActionLink("Log in","LogIn","User", new { @class = "btn btn-default"})</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Rejestracja</h2>
+        <p>@Html.ActionLink("Rejestracja","Registration","User", new { @class="btn btn-default"})</p>
+    </div>
+</div>

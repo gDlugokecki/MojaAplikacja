@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "AfterLogin";
+}
+
+<h2>AfterLogin</h2>
+<p>No jakis tekst AfterLogin</p>
+<div>
+    @Html.ActionLink("Profile","ShowProfile","User",new { @class="btn btn-default", id = User.Identity.Name })
+</div>
+<div>
+    @Html.ActionLink("Log Out", "LogOut","User", new {@class="btn btn-default"})
+</div>
+

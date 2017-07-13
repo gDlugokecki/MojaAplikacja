@@ -1,0 +1,23 @@
+{
+  "name": "bootstrap-datepicker",
+  "version": "1.0.1",
+  "main": [
+    "js/bootstrap-datepicker.js",
+    "css/datepicker.css"
+  ],
+  "dependencies": {
+    "jquery": ">=1.7.1",
+    "bootstrap": ">=2.0.4 <3.0"
+  },
+  "homepage": "https://github.com/rkmax/bootstrap-datepicker",
+  "_release": "1.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.1",
+    "commit": "6bd75201b6f9e6530c9400fd8249f77798c0f3ce"
+  },
+  "_source": "https://github.com/rkmax/bootstrap-datepicker.git",
+  "_target": "v1.0.1",
+  "_originalSource": "bootstrap3-datepicker",
+  "_direct": true
+}
