@@ -8,14 +8,15 @@
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Log In</h2>
-        <p>
-            Zaloguj się!
-        </p>
-        <p>@Html.ActionLink("Log in","LogIn","User", new { @class = "btn btn-default"})</p>
     </div>
-    <div class="col-md-4">
-        <h2>Rejestracja</h2>
-        <p>@Html.ActionLink("Rejestracja","Registration","User", new { @class="btn btn-default"})</p>
-    </div>
+        @if (!Request.IsAuthenticated)
+        {
+        <p>@Html.ActionLink("Log in", "LogIn", "User", new { @class = "btn btn-default" })</p>
+        <p>@Html.ActionLink("Rejestracja", "Registration", "User", new { @class = "btn btn-default" })</p>
+        }
+        else
+        {
+            <p>@Html.ActionLink("Log Out", "LogOut", "User", new { @class = "btn btn-default" })</p>
+            <p>@Html.ActionLink("Show Profile", "ShowProfile", "User", new { @class = "btn btn-default" })</p>
+        }
 </div>

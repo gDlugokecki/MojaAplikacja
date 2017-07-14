@@ -47,6 +47,10 @@ namespace MojaAplikacja.Controllers
         [HttpGet]
         public ActionResult LogIn()
         {
+            if(HttpContext.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -63,12 +67,11 @@ namespace MojaAplikacja.Controllers
 
                     if(v != null)
                     {
-                        FormsAuthentication.SetAuthCookie(u.UserName, u.RememberMe);
-                        Session["UserName"] = u.UserName;
 
                         if (string.Compare(u.Password,v.Password)==0)
                         {
                             FormsAuthentication.SetAuthCookie(u.UserName, u.RememberMe);
+                            Session["UserName"] = u.UserName;
                             if (u.RememberMe)
                             {
                                 HttpCookie cookie = new HttpCookie("UserLogin");
@@ -77,7 +80,7 @@ namespace MojaAplikacja.Controllers
                                 cookie.Expires = DateTime.Now.AddDays(15);
                                 Response.Cookies.Add(cookie);
                             }
-                            return View("AfterLogin");
+                            return RedirectToAction("Index", "Home");
                         }
                         else
                         {
@@ -100,6 +103,7 @@ namespace MojaAplikacja.Controllers
         {
             Session.Clear();
             Session.Abandon();
+            FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
         public ActionResult ShowProfile(string id)

@@ -23,7 +23,16 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <@*li>@Html.ActionLink("Home", "Index", "Home", new { @class = "navbar-brand" })</li>*@
-                    <li>@Html.ActionLink("Log in", "LogIn", "User", new { @class = "navbar-brand" })</li>
+                    <li>
+                        @if ((System.Web.HttpContext.Current.User != null) && (System.Web.HttpContext.Current.User.Identity.IsAuthenticated))
+                        {
+                            @Html.ActionLink("Log out","LogOut","User", new { @class = "navbar-brand" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Log in","LogIn","User", new { @class = "navbar-brand" })
+                        }
+                    </li>
                 </ul>
             </div>
         </div>
