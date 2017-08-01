@@ -155,23 +155,23 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Extended\User.cs" />
-    <Compile Include="Models\MyModel.Context.cs">
+    <Compile Include="Models\MojModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MyModel.Context.tt</DependentUpon>
+      <DependentUpon>MojModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MyModel.cs">
+    <Compile Include="Models\MojModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MyModel.tt</DependentUpon>
+      <DependentUpon>MojModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MyModel.Designer.cs">
+    <Compile Include="Models\MojModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MyModel.edmx</DependentUpon>
+      <DependentUpon>MojModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
-      <DependentUpon>MyModel.tt</DependentUpon>
+      <DependentUpon>MojModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -241,25 +241,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\MyModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MyModel.edmx</DependentUpon>
-      <LastGenOutput>MyModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\MyModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MyModel.edmx</DependentUpon>
-      <LastGenOutput>MyModel.cs</LastGenOutput>
-    </Content>
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EntityDeploy Include="Models\MyModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MyModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\MyModel.edmx.diagram">
-      <DependentUpon>MyModel.edmx</DependentUpon>
     </Content>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -354,7 +337,25 @@
     <Content Include="Content\bootstrap-datepicker.standalone.css.map" />
     <Content Include="Content\bootstrap-datepicker.min.css.map" />
     <Content Include="Content\bootstrap-datepicker.css.map" />
+    <EntityDeploy Include="Models\MojModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MojModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Images\hs.png" />
+    <Content Include="Models\MojModel.edmx.diagram">
+      <DependentUpon>MojModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Models\MojModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MojModel.edmx</DependentUpon>
+      <LastGenOutput>MojModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\MojModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MojModel.edmx</DependentUpon>
+      <LastGenOutput>MojModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap-datepicker-globalize.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
@@ -822,12 +823,14 @@
     <Content Include="Views\User\AfterRegistration.cshtml" />
     <Content Include="Views\User\ShowProfile.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

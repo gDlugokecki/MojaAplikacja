@@ -11,12 +11,12 @@
     </div>
         @if (!Request.IsAuthenticated)
         {
-        <p>@Html.ActionLink("Log in", "LogIn", "User", new { @class = "btn btn-default" })</p>
-        <p>@Html.ActionLink("Rejestracja", "Registration", "User", new { @class = "btn btn-default" })</p>
+        <p>@Html.ActionLink("Log in", "LogIn", "UserController", new { @class = "btn btn-default" })</p>
+        <p>@Html.ActionLink("Rejestracja", "Registration", "UserController", new { @class = "btn btn-default" })</p>
         }
         else
         {
-            <p>@Html.ActionLink("Log Out", "LogOut", "User", new { @class = "btn btn-default" })</p>
-            <p>@Html.ActionLink("Show Profile", "ShowProfile", "User", new { @class = "btn btn-default" })</p>
+            <p>@Html.ActionLink("Log Out", "LogOut", "UserController", new { @class = "btn btn-default" })</p>
+            <p>@Html.ActionLink("Show Profile", "ShowProfile", "UserController", new { @class = "btn btn-default" })</p>
         }
 </div>

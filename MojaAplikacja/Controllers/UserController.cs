@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.Services.Description;
-
+using System.Data.Entity;
 
 
 namespace MojaAplikacja.Controllers
@@ -25,12 +25,12 @@ namespace MojaAplikacja.Controllers
         {
             if(ModelState.IsValid)
             {
-                using (MyDatabaseEntities3 dc = new MyDatabaseEntities3())
+                using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
                 {
-                    var v = dc.Users.Where(a => a.UserName == u.UserName).SingleOrDefault();
+                    var v = dc.User.Where(a => a.UserName == u.UserName).SingleOrDefault();
                     if(v == null)
                     {
-                        dc.Users.Add(u);
+                        dc.User.Add(u);
                         dc.SaveChanges();
                         return View("AfterRegistration");
                     }
@@ -61,9 +61,9 @@ namespace MojaAplikacja.Controllers
             string message = "";
             if(ModelState.IsValid)
             {
-                using (MyDatabaseEntities3 dc = new MyDatabaseEntities3())
+                using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
                 {
-                    var v = dc.Users.SingleOrDefault(a => a.UserName == u.UserName);
+                    var v = dc.User.SingleOrDefault(a => a.UserName == u.UserName);
 
                     if(v != null)
                     {
@@ -71,12 +71,13 @@ namespace MojaAplikacja.Controllers
                         if (string.Compare(u.Password,v.Password)==0)
                         {
                             FormsAuthentication.SetAuthCookie(u.UserName, u.RememberMe);
-                            Session["UserName"] = u.UserName;
+                            Session["UserName"] = v.UserName;
+                            Session["UserID"] = v.UserID;
                             if (u.RememberMe)
                             {
                                 HttpCookie cookie = new HttpCookie("UserLogin");
-                                cookie.Values.Add("UserName", u.UserName);
-                                cookie.Values.Add("Password", u.Password);
+                                cookie.Values.Add("UserName",v.UserName);
+                                cookie.Values.Add("UserID", v.UserID.ToString());
                                 cookie.Expires = DateTime.Now.AddDays(15);
                                 Response.Cookies.Add(cookie);
                             }
@@ -108,10 +109,22 @@ namespace MojaAplikacja.Controllers
         }
         public ActionResult ShowProfile(string id)
         {
-            using (MyDatabaseEntities3 dc = new MyDatabaseEntities3())
+            using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
             {
-                var username = Session["UserName"].ToString();
-                var v = dc.Users.Where(a => a.UserName == username).SingleOrDefault();
+
+                var username = "";
+                if (Session["Username"] == null)
+                {
+                    username = Request.Cookies["UserLogin"].Value.ToString();
+                    username = username.Substring(username.IndexOf("=")+1);
+                    username = username.Remove(username.IndexOf("&"));
+                }
+                else
+                {
+                     username = Session["UserName"].ToString();
+                }
+
+                var v = dc.User.Where(a => a.UserName == username).SingleOrDefault();
                 if (v != null)
                 {
                     return View(v);
@@ -119,9 +132,52 @@ namespace MojaAplikacja.Controllers
 
 
             }
-                return View();
+            return View();
         }
-        
+        public ActionResult AddPhoto(HttpPostedFileBase file)
+        {
+            using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
+            {
+                if (file != null)
+                {
+                    var Id = "";
+                    if (Session["UserID"] == null)
+                    {
+                        Id = Request.Cookies["UserLogin"].Value.ToString();
+                        Id = Id.Substring(Id.IndexOf("&") + 1);
+                        Id = Id.Substring(Id.IndexOf("=") + 1);
+                    }
+                    else
+                    {
+                        Id = Session["UserID"].ToString();
+                    }
+                    var v = dc.User.Where(a => a.UserID.ToString() == Id).SingleOrDefault();
+                    if (v != null)
+                    {
+
+                        string ImageName = System.IO.Path.GetFileName(file.FileName);
+                        string physicalPath = System.IO.Path.Combine(Server.MapPath("~/Images/"), ImageName);
+                        string filename = file.FileName;
+                        string relativeFileName = "~/Images/" + ImageName;
+                        file.SaveAs(physicalPath);
+                        v.PhotoPath = relativeFileName;
+                        dc.User.Attach(v);
+                        dc.Entry(v).State = EntityState.Modified;
+                        dc.SaveChanges();
+
+                    }
+                    
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public PartialViewResult ChangePassword()
+        {
+            return PartialView();
+        }
+
+
 
     }
 }

@@ -26,20 +26,29 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2",})
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @id ="Password" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger"})
             </div>
         </div>
-        <div class="form-group">
+        @*@*<div class="form-group">
             @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
             </div>
+        </div>*@
+        
+       @*<input type="password" name="ConfirmPassword" id="ConfirmPassword" value="" size="32", />*@
+    <div class="form-group">
+         @Html.Label("ConfirmPassword",new {@class = "control-label col-md-2"})
+        <div class="col-md-10">
+            @Html.Password("ConfirmPassword", "", new { @class = "form-control" })
         </div>
-
+     </div>
+        <div class="form-group">
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.EmailAdress, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -52,17 +61,18 @@
             @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
             
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @id = "dpick" } })
+                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @id = "dpick"} })
                 @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default"  id="btnSubmit"/>
             </div>
         </div>
     </div>
+   
 }
 
 
@@ -79,8 +89,8 @@
 <script src="js/bootstrap-datepicker.js"></script>
 
 <script type="text/javascript">
- $(document).ready(function(){
-     $("#dpick").datepicker({
+    $(document).ready(function () {
+        $("#dpick").datepicker({
          showOn: "button",
          buttonImage: "https://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
          buttonImageOnly: true,
@@ -88,10 +98,23 @@
          format: 'dd-MM-yyyy',
          changeYear: true,
          changeMonth: true,
-         yearRange: '-100:+0'
+         yearRange: '-100:+0',
+         defaultDate: "01/01/1995"
+         
+         
 
         
-        });
+     }).click(function () { $(this).datepicker('show'); });
+     $("#btnSubmit").on('click', function () {
+         if ($("#ConfirmPassword").val() != $("#Password").val()) {
+             event.preventDefault();
+             alert("Passwords do not match.");
+         }
+         
+     });
     });
+    
 </script>
+
+
     }

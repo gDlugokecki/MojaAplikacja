@@ -21,5 +21,13 @@ namespace MojaAplikacja.Controllers
         {
             return RedirectToAction("LogIn", "User");
         }
+        public ActionResult LogOut()
+        {
+            return RedirectToAction("LogOut", "User");
+        }
+        public ActionResult ShowProfile()
+        {
+            return RedirectToAction("ShowProfile", "User");
+        }
     }
 }

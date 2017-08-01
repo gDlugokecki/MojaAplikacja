@@ -13,10 +13,10 @@ namespace MojaAplikacja.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class MyDatabaseEntities3 : DbContext
+    public partial class MyDatabaseEntities5 : DbContext
     {
-        public MyDatabaseEntities3()
-            : base("name=MyDatabaseEntities3")
+        public MyDatabaseEntities5()
+            : base("name=MyDatabaseEntities5")
         {
         }
     
@@ -25,6 +25,6 @@ namespace MojaAplikacja.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<User> User { get; set; }
     }
 }

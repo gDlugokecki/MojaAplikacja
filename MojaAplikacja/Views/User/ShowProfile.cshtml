@@ -1,13 +1,78 @@
-﻿@model MojaAplikacja.Models.User
+﻿
+
+@model MojaAplikacja.Models.User
 @{
     ViewBag.Title = "ShowProfile";
 }
 
 <h2>@ViewBag.description</h2>
- <div>
-     User Name: @Model.UserName
-     Email Adress: @Model.EmailAdress
- </div>
+@using (Html.BeginForm("AddPhoto", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    if (Request.IsAuthenticated)
+    {
+        <div>
+                <p>User Name: @Model.UserName </p>
+                <p>Email Adress: @Model.EmailAdress</p>
+            @if(Model.PhotoPath != null)
+            { 
+                <img src="@Url.Content(Model.PhotoPath)" alt="Image" width="450" height="350" />
+            }
+                <div class="editor-field">
+                    <input id="PhotoPath" title="Upload Image" type="file" name="file" />
+                </div>
+                <p><input type="submit" value="Upload" /></p>
+         </div>
+         <div id="ChPass">
+                 @Html.Label("Old Password", new { @class = "control-label col-md-2"})
+                 @Html.TextBox("OldPassword","",new { @class="form-control", @id="OldPassword"})
+                 @Html.Label("New Password", new { @class = "control-label col-md-2" })
+                 @Html.TextBox("NewPassword","", new { @class = "form-control", @id="NewPassword" })
+         </div>
+         <a href="#" id="changePass">Change Password</a>
+        
+    }
+    else
+    {
+        @Html.ActionLink("Log in", "LogIn", "User");
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>"
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ChPass").dialog({
+                autoOpen: false,
+                title: "ChangePassword",
+                width: "auto",
+                height: "auto",
+                modal: true
+                buttons: {
+                        'Confirm': function () {
+                        if ($("#NewPassword").val() != $("#OldPassword").val()) {
+                            event.preventDefault();
+                            alert("Passwords do not match.");
+                        }
+                    }
+                }
+            });
+            $("#changePass").click(function () {
+                $("#ChPass").dialog("open");
+            });
+        });
+      
+            
+        
+
+    </script>
+    }
+
+
+
 
 
 

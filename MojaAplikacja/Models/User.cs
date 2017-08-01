@@ -18,6 +18,7 @@ namespace MojaAplikacja.Models
         public string UserName { get; set; }
         public string Password { get; set; }
         public string EmailAdress { get; set; }
-        public System.DateTime DateOfBirth { get; set; }
+        public Nullable<System.DateTime> DateOfBirth { get; set; }
+        public string PhotoPath { get; set; }
     }
 }
