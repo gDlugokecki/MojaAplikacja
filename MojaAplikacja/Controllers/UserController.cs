@@ -171,10 +171,33 @@ namespace MojaAplikacja.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-        [HttpGet]
-        public PartialViewResult ChangePassword()
+        [HttpPost]
+        public ActionResult ChangePassword(string Password)
         {
-            return PartialView();
+            using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
+            {
+               
+                    var Id = "";
+                    if (Session["UserID"] == null)
+                    {
+                        Id = Request.Cookies["UserLogin"].Value.ToString();
+                        Id = Id.Substring(Id.IndexOf("&") + 1);
+                        Id = Id.Substring(Id.IndexOf("=") + 1);
+                    }
+                    else
+                    {
+                        Id = Session["UserID"].ToString();
+                    }
+                    var v = dc.User.Where(a => a.UserID.ToString() == Id).SingleOrDefault();
+                    if (v != null)
+                    {
+                        v.Password = Password;
+                        dc.User.Attach(v);
+                        dc.Entry(v).State = EntityState.Modified;
+                        dc.SaveChanges();
+                    }
+            }
+                        return PartialView();
         }
 
 

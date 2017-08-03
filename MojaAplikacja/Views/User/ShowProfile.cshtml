@@ -13,9 +13,10 @@
     {
         <div>
                 <p>User Name: @Model.UserName </p>
-                <p>Email Adress: @Model.EmailAdress</p>
+                <p>Email Adress: @Model.EmailAdress.ToString()</p>
             @if(Model.PhotoPath != null)
             { 
+               
                 <img src="@Url.Content(Model.PhotoPath)" alt="Image" width="450" height="350" />
             }
                 <div class="editor-field">
@@ -25,9 +26,11 @@
          </div>
          <div id="ChPass">
                  @Html.Label("Old Password", new { @class = "control-label col-md-2"})
-                 @Html.TextBox("OldPassword","",new { @class="form-control", @id="OldPassword"})
+                 @Html.Password("OldPassword","",new { @class="form-control", @id="OldPassword"})
                  @Html.Label("New Password", new { @class = "control-label col-md-2" })
-                 @Html.TextBox("NewPassword","", new { @class = "form-control", @id="NewPassword" })
+                 @Html.Password("NewPassword","", new { @class = "form-control", @id="NewPassword" })
+                 @Html.Label("New Confirm", new { @class = "control-label col-md-2" })
+                 @Html.Password("NewConfirm", "", new { @class = "form-control", @id = "NewConfirm" })
          </div>
          <a href="#" id="changePass">Change Password</a>
         
@@ -50,23 +53,47 @@
                 title: "ChangePassword",
                 width: "auto",
                 height: "auto",
-                modal: true
+                modal: true,
                 buttons: {
-                        'Confirm': function () {
-                        if ($("#NewPassword").val() != $("#OldPassword").val()) {
-                            event.preventDefault();
-                            alert("Passwords do not match.");
+                    'Confirm': function () {
+                        var old = ($("#OldPassword").val());
+                        var new1 = ($("#NewPassword").val());
+                        if ('@Model.Password' == $("#OldPassword").val()) 
+                        {
+                            if ($("#NewPassword").val() != $("#OldPassword").val())
+                            {
+                                if ($("#NewPassword").val() == $("#NewConfirm").val())
+                                {
+                                    $.post("/User/ChangePassword", { Password: $("#NewPassword").val() }, function (response) { alert("Hello") });
+                                    $(this).dialog('close');
+
+                                }
+                                else
+                                {
+                                    alert("Password do not match");
+                                }
+                            }
+                            else
+                            {
+                                alert("No difference between new and old password");
+                            }
                         }
+                        else
+                        {
+                            alert("Old Password is the same as New one");
+                        }
+                        }
+
                     }
-                }
+
             });
             $("#changePass").click(function () {
                 $("#ChPass").dialog("open");
             });
         });
-      
-            
-        
+
+
+
 
     </script>
     }
