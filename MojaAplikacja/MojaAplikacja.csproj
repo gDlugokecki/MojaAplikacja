@@ -154,6 +154,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hash.cs" />
     <Compile Include="Models\Extended\User.cs" />
     <Compile Include="Models\MojModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -822,6 +823,8 @@
     <Content Include="Views\User\AfterLogin.cshtml" />
     <Content Include="Views\User\AfterRegistration.cshtml" />
     <Content Include="Views\User\ShowProfile.cshtml" />
+    <Content Include="Views\User\NotConfirmed.cshtml" />
+    <Content Include="Views\User\Activate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

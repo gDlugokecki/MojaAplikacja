@@ -7,11 +7,11 @@
 <h2>Registration</h2>
 
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
+@using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
         <h4>User</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -52,7 +52,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EmailAdress, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EmailAdress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.EmailAdress, new { htmlAttributes = new { @class = "form-control", @id = "EmailValue" } })
                 @Html.ValidationMessageFor(model => model.EmailAdress, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -100,20 +100,23 @@
          changeMonth: true,
          yearRange: '-100:+0',
          defaultDate: "01/01/1995"
-         
-         
 
-        
+
+
+
      }).click(function () { $(this).datepicker('show'); });
      $("#btnSubmit").on('click', function () {
          if ($("#ConfirmPassword").val() != $("#Password").val()) {
              event.preventDefault();
              alert("Passwords do not match.");
          }
-         
+         else
+         {
+             $.post("/User/Registration", { EmailAdress: $("#EmailValue").val()});
+         }
      });
     });
-    
+
 </script>
 
 

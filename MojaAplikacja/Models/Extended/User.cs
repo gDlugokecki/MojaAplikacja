@@ -24,12 +24,6 @@ namespace MojaAplikacja.Models
         [DataType(DataType.Password)]
         
         public string Password { get; set; }
-        //[NotMapped]
-        //[Required]
-        //[DisplayName("Confirm Password")]
-        //[Compare("Password", ErrorMessage = "Not match")]
-        //[DataType(DataType.Password)]
-        //public string ConfirmPassword { get; set; }
         [Required]
         [DisplayName("Email Adress")]
         public string EmailAdress { get; set; }
@@ -40,5 +34,8 @@ namespace MojaAplikacja.Models
         public DateTime DateOfBirth { get; set; }
 
         public string PhotoPath { get; set; }
+        
+        public bool EmailConf { get; set; }
+        public string ActivationCode { get; set; }
     }
 }

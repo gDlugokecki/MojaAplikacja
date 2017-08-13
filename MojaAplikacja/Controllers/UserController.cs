@@ -7,7 +7,9 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.Services.Description;
 using System.Data.Entity;
-
+using System.Net.Mail;
+using System.Net;
+using System.Configuration;
 
 namespace MojaAplikacja.Controllers
 {
@@ -21,28 +23,53 @@ namespace MojaAplikacja.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Registration(User u)
+        public ActionResult Registration(User u,string EmailAdress)
         {
             if(ModelState.IsValid)
             {
                 using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
                 {
                     var v = dc.User.Where(a => a.UserName == u.UserName).SingleOrDefault();
-                    if(v == null)
+                    if (v == null)
                     {
+                        u.Password = Hash.sha256(u.Password);
                         dc.User.Add(u);
                         dc.SaveChanges();
+                        sendEmail(u,EmailAdress);
                         return View("AfterRegistration");
                     }
                     else
                     {
-                        ModelState.AddModelError("","User Already Exists");
+                        ModelState.AddModelError("", "User Already Exists");
                     }
-                    
+
                 }
             }
             
-            return View(u);
+            return View();
+        }
+        public ActionResult sendEmail(User u,string Email)
+        {
+            Guid Code = Guid.NewGuid();
+            using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
+            {
+                var v = dc.User.SingleOrDefault(a => a.UserName == u.UserName);
+                v.ActivationCode = Code.ToString();
+                dc.User.Attach(v);
+                dc.Entry(v).State = EntityState.Modified;
+                dc.SaveChanges();
+            }
+            var smtpClient = new SmtpClient();
+            var msg = new MailMessage();
+            msg.To.Add(Email);
+            msg.Subject = "Test";
+            var VeryUrl = "/User/Activate/" + Code;
+            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, VeryUrl);
+            msg.IsBodyHtml = true;
+            msg.Body = "<br/><br/>Hello"+ " " + u.UserName + "Click on the link below to activate your account!" +
+                           "<br/><br/><a href='"+link+"'>"+link+"</a>";
+            smtpClient.Send(msg);
+            return View();
         }
         [HttpGet]
         public ActionResult LogIn()
@@ -58,44 +85,82 @@ namespace MojaAplikacja.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogIn(UserLogin u)
         {
+            
             string message = "";
             if(ModelState.IsValid)
             {
                 using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
                 {
                     var v = dc.User.SingleOrDefault(a => a.UserName == u.UserName);
-
-                    if(v != null)
+                    if (v.EmailConf == true)
                     {
-
-                        if (string.Compare(u.Password,v.Password)==0)
+                        if (v != null)
                         {
-                            FormsAuthentication.SetAuthCookie(u.UserName, u.RememberMe);
-                            Session["UserName"] = v.UserName;
-                            Session["UserID"] = v.UserID;
-                            if (u.RememberMe)
+                            u.Password = Hash.sha256(u.Password);
+                            if (string.Compare(u.Password, v.Password) == 0)
                             {
-                                HttpCookie cookie = new HttpCookie("UserLogin");
-                                cookie.Values.Add("UserName",v.UserName);
-                                cookie.Values.Add("UserID", v.UserID.ToString());
-                                cookie.Expires = DateTime.Now.AddDays(15);
-                                Response.Cookies.Add(cookie);
+                                FormsAuthentication.SetAuthCookie(u.UserName, u.RememberMe);
+                                Session["UserName"] = v.UserName;
+                                Session["UserID"] = v.UserID;
+                                if (u.RememberMe)
+                                {
+                                    HttpCookie cookie = new HttpCookie("UserLogin");
+                                    cookie.Values.Add("UserName", v.UserName);
+                                    cookie.Values.Add("UserID", v.UserID.ToString());
+                                    cookie.Expires = DateTime.Now.AddDays(15);
+                                    Response.Cookies.Add(cookie);
+                                }
+                                return RedirectToAction("Index", "Home");
                             }
-                            return RedirectToAction("Index", "Home");
+                            else
+                            {
+                                ModelState.AddModelError("", "WRONG");
+                            }
                         }
                         else
                         {
-                            ModelState.AddModelError("", "WRONG");
+                            message = "wuuut";
                         }
                     }
                     else
                     {
-                        message = "wuuut";
+                        return RedirectToAction("NotConfirmed","User");
                     }
                 }
             }
-            return View(u);
+            return View();
         }
+        public ActionResult NotConfirmed()
+        {
+            return View();
+        }
+       
+        public ActionResult Activate()
+        {
+            ViewBag.Message = "Invalid Activation code.";
+            if (RouteData.Values["id"] != null)
+            {
+                Guid activationCode = new Guid(RouteData.Values["id"].ToString());
+                using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
+                {
+                    var v = dc.User.SingleOrDefault(a => a.ActivationCode.ToString() == activationCode.ToString());
+                    if(v != null)
+                    {
+                        v.EmailConf = true;
+                        ViewBag.Message = "Activation successful";
+                        dc.User.Attach(v);
+                        dc.Entry(v).State = EntityState.Modified;
+                        dc.SaveChanges();
+                    }
+
+
+                }
+                return View();
+            }
+            return View();
+        }
+        
+
         public ActionResult AfterRegistration()
         {
             return View();
@@ -107,6 +172,7 @@ namespace MojaAplikacja.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
+       
         public ActionResult ShowProfile(string id)
         {
             using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
@@ -199,7 +265,7 @@ namespace MojaAplikacja.Controllers
             }
                         return PartialView();
         }
-
+       
 
 
     }

@@ -20,5 +20,7 @@ namespace MojaAplikacja.Models
         public string EmailAdress { get; set; }
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public string PhotoPath { get; set; }
+        public Nullable<bool> EmailConf { get; set; }
+        public string ActivationCode { get; set; }
     }
 }

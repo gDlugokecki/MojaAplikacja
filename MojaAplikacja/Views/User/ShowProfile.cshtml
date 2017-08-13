@@ -14,15 +14,22 @@
         <div>
                 <p>User Name: @Model.UserName </p>
                 <p>Email Adress: @Model.EmailAdress.ToString()</p>
-            @if(Model.PhotoPath != null)
-            { 
-               
-                <img src="@Url.Content(Model.PhotoPath)" alt="Image" width="450" height="350" />
-            }
-                <div class="editor-field">
-                    <input id="PhotoPath" title="Upload Image" type="file" name="file" />
+            @if (Model.PhotoPath != null)
+            {
+                <div>
+                    <img src="@Url.Content(Model.PhotoPath)" alt="Image" width="450" height="350" />
                 </div>
-                <p><input type="submit" value="Upload" /></p>
+            }
+            <br />
+            <form>
+                <div class="form-group form-inline">
+                    <label class="btn btn-default btn-file">
+                        Browse <input id="PhotoPath" type="file" name="file" style="display:none;">
+                    </label>
+                    <input type="text" id="TextField" class="form-control" @*style="width:10px;height:10px;"*@ disabled />
+                </div>
+            </form>
+            <input type="submit" class="btn btn-default btn-file" value="Upload" />
          </div>
          <div id="ChPass">
                  @Html.Label("Old Password", new { @class = "control-label col-md-2"})
@@ -64,7 +71,7 @@
                             {
                                 if ($("#NewPassword").val() == $("#NewConfirm").val())
                                 {
-                                    $.post("/User/ChangePassword", { Password: $("#NewPassword").val() }, function (response) { alert("Hello") });
+                                    $.post("/User/ChangePassword", { Password: $("#NewPassword").val() });
                                     $(this).dialog('close');
 
                                 }
@@ -90,6 +97,10 @@
             $("#changePass").click(function () {
                 $("#ChPass").dialog("open");
             });
+            $("#PhotoPath").change(function () {
+                var filename = $('#PhotoPath')[0].files[0].name;
+                $("#TextField").val(filename);
+            })
         });
 
 
