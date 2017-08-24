@@ -156,7 +156,9 @@
     </Compile>
     <Compile Include="Hash.cs" />
     <Compile Include="Models\Extended\User.cs" />
-    <Compile Include="Models\Forum.cs" />
+    <Compile Include="Models\Forum.cs">
+      <DependentUpon>MojModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MojModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

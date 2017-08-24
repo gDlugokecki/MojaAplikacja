@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="MyDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'C:\USERS\GRZES\DOCUMENTS\VISUAL STUDIO 2017\PROJECTS\MOJAAPLIKACJA\MOJAAPLIKACJA\APP_DATA\MYDATABASE.MDF.dbo.Forum' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Forum">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="varchar(max)" Nullable="false" />
+          <Property Name="Title" Type="varchar(max)" />
+          <Property Name="Content" Type="varchar(max)" />
+          <Property Name="Date" Type="datetime" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
@@ -13,21 +24,39 @@
           <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar(max)" Nullable="false" />
           <Property Name="EmailAdress" Type="varchar(max)" Nullable="false" />
-          <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="DateOfBirth" Type="date" />
           <Property Name="PhotoPath" Type="varchar(max)" />
           <Property Name="EmailConf" Type="bit" />
           <Property Name="ActivationCode" Type="varchar(max)" />
         </EntityType>
         <EntityContainer Name="MyDatabaseModelStoreContainer">
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Forum" EntityType="Self.Forum" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Forum].[Username] AS [Username], 
+    [Forum].[Title] AS [Title], 
+    [Forum].[Content] AS [Content], 
+    [Forum].[Date] AS [Date]
+    FROM [dbo].[Forum] AS [Forum]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MyDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="MyDatabaseEntities5" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Forum" EntityType="MyDatabaseModel.Forum" />
           <EntitySet Name="User" EntityType="MyDatabaseModel.User" />
         </EntityContainer>
+        <EntityType Name="Forum">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
@@ -36,7 +65,7 @@
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="EmailAdress" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
           <Property Name="PhotoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="EmailConf" Type="Boolean" />
           <Property Name="ActivationCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -47,6 +76,16 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MyDatabaseModelStoreContainer" CdmEntityContainer="MyDatabaseEntities5">
+          <EntitySetMapping Name="Forum">
+            <EntityTypeMapping TypeName="MyDatabaseModel.Forum">
+              <MappingFragment StoreEntitySet="Forum">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="MyDatabaseModel.User">
               <MappingFragment StoreEntitySet="User">

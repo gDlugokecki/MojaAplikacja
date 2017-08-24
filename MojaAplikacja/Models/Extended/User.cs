@@ -27,7 +27,7 @@ namespace MojaAplikacja.Models
         [Required]
         [DisplayName("Email Adress")]
         public string EmailAdress { get; set; }
-
+        [Required]
         [Display(Name ="Date of Birth")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString ="{0:MM/dd/yyyy}")]

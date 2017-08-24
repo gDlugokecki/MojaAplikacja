@@ -25,6 +25,7 @@ namespace MojaAplikacja.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Forum> Forum { get; set; }
         public virtual DbSet<User> User { get; set; }
     }
 }

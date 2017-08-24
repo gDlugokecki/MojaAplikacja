@@ -267,7 +267,12 @@ namespace MojaAplikacja.Controllers
         }
         public ActionResult Forum()
         {
-            return View();
+            var users = new List<User>();
+            using (MyDatabaseEntities5 dc = new MyDatabaseEntities5())
+            {
+                users = dc.User.ToList();
+            }
+            return View(users);
         }
        
 
