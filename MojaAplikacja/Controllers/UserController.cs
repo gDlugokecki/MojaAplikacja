@@ -265,6 +265,10 @@ namespace MojaAplikacja.Controllers
             }
                         return PartialView();
         }
+        public ActionResult Forum()
+        {
+            return View();
+        }
        
 
 

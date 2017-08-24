@@ -156,6 +156,7 @@
     </Compile>
     <Compile Include="Hash.cs" />
     <Compile Include="Models\Extended\User.cs" />
+    <Compile Include="Models\Forum.cs" />
     <Compile Include="Models\MojModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -804,6 +805,7 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="StyleSheet\StyleSheet.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -825,6 +827,7 @@
     <Content Include="Views\User\ShowProfile.cshtml" />
     <Content Include="Views\User\NotConfirmed.cshtml" />
     <Content Include="Views\User\Activate.cshtml" />
+    <Content Include="Views\User\Forum.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

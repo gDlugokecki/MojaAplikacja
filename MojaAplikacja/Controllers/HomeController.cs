@@ -29,5 +29,9 @@ namespace MojaAplikacja.Controllers
         {
             return RedirectToAction("ShowProfile", "User");
         }
+        public ActionResult Forum()
+        {
+            return RedirectToAction("Forum", "User");
+        }
     }
 }

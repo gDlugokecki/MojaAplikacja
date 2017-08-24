@@ -7,16 +7,16 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-    </div>
+    
         @if (!Request.IsAuthenticated)
         {
-        <p>@Html.ActionLink("Log in", "LogIn", "UserController", new { @class = "btn btn-default" })</p>
-        <p>@Html.ActionLink("Rejestracja", "Registration", "UserController", new { @class = "btn btn-default" })</p>
+            <p>@Html.ActionLink("Log in", "LogIn", "UserController", new { @class = "btn btn-default" })</p>
+            <p>@Html.ActionLink("Rejestracja", "Registration", "UserController", new { @class = "btn btn-default" })</p>
         }
         else
         {
-            <p>@Html.ActionLink("Log Out", "LogOut", "UserController", new { @class = "btn btn-default" })</p>
             <p>@Html.ActionLink("Show Profile", "ShowProfile", "UserController", new { @class = "btn btn-default" })</p>
+            <p>@Html.ActionLink("Forum", "Forum", "UserController", new { @class = "btn btn-default" })</p>
+            <p>@Html.ActionLink("Log Out", "LogOut", "UserController", new { @class = "btn btn-default" })</p>
         }
 </div>
